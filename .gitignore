@@ -1,0 +1,41 @@
+# ─── Dependencies ──────────────────────────────
+node_modules/
+
+# ─── Environment Variables (NEVER share these!) ─
+.env
+.env.local
+.env.production
+.env.*.local
+
+# ─── Build Output ──────────────────────────────
+frontend-part/library-management-system/dist/
+frontend-part/library-management-system/build/
+
+# ─── Uploaded Files (user-generated content) ───
+backend/uploads/profiles/*
+backend/uploads/covers/*
+!backend/uploads/profiles/.gitkeep
+!backend/uploads/covers/.gitkeep
+
+# ─── Logs ──────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ─── OS Files ──────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE / Editor ──────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── Testing ───────────────────────────────────
+coverage/
+
+# ─── Misc ──────────────────────────────────────
+*.tgz
+.cache/
