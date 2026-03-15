@@ -1,0 +1,26 @@
+# Render.com Blueprint — Backend Deployment
+# This file enables one-click deployment on Render
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: librasync-api
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false  # User must set this manually
+      - key: JWT_SECRET
+        generateValue: true  # Auto-generates a secure random string
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false  # Set after Vercel deploys frontend
+      - key: PORT
+        value: 5000

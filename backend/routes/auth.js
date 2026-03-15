@@ -22,10 +22,11 @@ const generateTokens = (user, res) => {
     REFRESH_SECRET,
     { expiresIn: "30d" }
   );
+  const isProduction = process.env.NODE_ENV === "production";
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax", // 'none' required for cross-origin (Vercel↔Render)
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
   return accessToken;
@@ -231,7 +232,12 @@ router.post("/refresh", async (req, res) => {
 
 /* ─── Logout (clear refresh cookie) ──────────────────── */
 router.post("/logout", (req, res) => {
-  res.clearCookie("refreshToken", { httpOnly: true, sameSite: "strict" });
+  const isProduction = process.env.NODE_ENV === "production";
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+  });
   res.json({ message: "Logged out" });
 });
 
