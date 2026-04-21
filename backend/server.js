@@ -123,7 +123,7 @@ app.get("/api/health", (req, res) => {
 });
 
 /* ─── Production Static Serving ────────────────────────── */
-if (process.env.NODE_ENV === "production") {
+if (false) {
   const frontendDist = path.join(__dirname, "../frontend-part/library-management-system/dist");
   app.use(express.static(frontendDist));
   app.get("*", (req, res) => {
