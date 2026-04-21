@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css';
 NProgress.configure({ showSpinner: false, trickleSpeed: 300 });
 
 const API = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://librasync.onrender.com/api',
   withCredentials: true, // send cookies for refresh token
 });
 
@@ -61,7 +61,7 @@ API.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const { data } = await axios.post('/api/auth/refresh', {}, { withCredentials: true });
+        const { data } = await axios.post('https://librasync.onrender.com/api/auth/refresh', {}, { withCredentials: true });
         localStorage.setItem('token', data.token);
         API.defaults.headers.common.Authorization = `Bearer ${data.token}`;
         processQueue(null, data.token);
