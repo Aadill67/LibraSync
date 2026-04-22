@@ -27,8 +27,9 @@ import { Search, Delete, Visibility, FileDownload, CheckCircle, Block } from '@m
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import API from '../api/axios';
+import { getServerFileUrl } from '../api/config';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 
 const AllMembers = () => {
   const [members, setMembers] = useState([]);
@@ -184,7 +185,7 @@ const AllMembers = () => {
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                     <Avatar
-                      src={m.photo ? `${API_BASE}${m.photo}` : undefined}
+                      src={m.photo ? getServerFileUrl(m.photo) : undefined}
                       sx={{ width: 36, height: 36, background: 'linear-gradient(135deg, #f59e0b, #f97316)', fontSize: '0.85rem', fontWeight: 600 }}
                     >
                       {!m.photo && m.userFullName?.charAt(0)?.toUpperCase()}
@@ -294,7 +295,7 @@ const AllMembers = () => {
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                           <Avatar
-                            src={member.photo ? `${API_BASE}${member.photo}` : undefined}
+                            src={member.photo ? getServerFileUrl(member.photo) : undefined}
                             sx={{
                               width: 36,
                               height: 36,
@@ -401,7 +402,7 @@ const AllMembers = () => {
               <Box sx={{ pt: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                   <Avatar
-                    src={selectedMember.photo ? `${API_BASE}${selectedMember.photo}` : undefined}
+                    src={selectedMember.photo ? getServerFileUrl(selectedMember.photo) : undefined}
                     sx={{
                       width: 56,
                       height: 56,

@@ -43,6 +43,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useThemeMode } from '../context/ThemeContext';
 import API from '../api/axios';
+import { getServerFileUrl } from '../api/config';
 
 const DRAWER_WIDTH = 270;
 
@@ -73,8 +74,7 @@ const Layout = () => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   // Build profile photo URL
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-  const profilePhotoUrl = user?.photo ? `${API_BASE}${user.photo}` : null;
+  const profilePhotoUrl = getServerFileUrl(user?.photo);
 
   // Fetch unread notification count
   const fetchUnread = useCallback(async () => {

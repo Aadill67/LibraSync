@@ -158,7 +158,7 @@ router.post("/forgot-password", async (req, res) => {
     await user.save({ validateBeforeSave: false });
 
     // Build reset URL
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const frontendUrl = process.env.FRONTEND_URL || "https://libra-sync-v3xg.vercel.app";
     const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
     // Send email

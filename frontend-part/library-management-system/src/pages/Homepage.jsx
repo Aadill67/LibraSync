@@ -114,85 +114,111 @@ const AnimatedCounter = ({ target, suffix = '' }) => {
 };
 
 /* ─── Marquee Book Card ─── */
-const BookCard = ({ title, author, color, isbn }) => (
-  <Box
-    sx={{
-      minWidth: 200,
-      maxWidth: 200,
-      height: 300,
-      borderRadius: 3,
-      background: `linear-gradient(145deg, ${color}15, ${color}08)`,
-      border: `1px solid ${color}30`,
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      flexShrink: 0,
-      transition: 'all 0.3s ease',
-      cursor: 'default',
-      '&:hover': {
-        transform: 'translateY(-8px) scale(1.02)',
-        boxShadow: `0 20px 40px ${color}20`,
-        borderColor: `${color}60`,
-      },
-    }}
-  >
-    {/* Book cover image */}
+const BookCard = ({ title, author, color, isbn }) => {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackIcon = (
     <Box
       sx={{
-        height: 160,
-        overflow: 'hidden',
-        position: 'relative',
-        background: `linear-gradient(135deg, ${color}25, ${color}10)`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        height: '100%',
+        width: '100%',
       }}
     >
-      <Box
-        component="img"
-        src={`https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`}
-        alt={title}
-        sx={{
-          height: '100%',
-          width: '100%',
-          objectFit: 'cover',
-          transition: 'transform 0.4s ease',
-          '&:hover': { transform: 'scale(1.08)' },
-        }}
-        onError={(e) => {
-          e.target.style.display = 'none';
-          e.target.parentElement.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;width:100%"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="${color}" opacity="0.4"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div>`;
-        }}
-      />
+      <MenuBook sx={{ color, fontSize: 48, opacity: 0.4 }} />
     </Box>
-    {/* Book details */}
-    <Box sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <Box>
-        <Typography
-          sx={{ fontWeight: 700, fontSize: '0.88rem', mb: 0.5, color: '#f1f5f9', lineHeight: 1.3 }}
-        >
-          {title}
-        </Typography>
-        <Typography sx={{ fontSize: '0.72rem', color: '#94a3b8' }}>
-          {author}
-        </Typography>
-      </Box>
+  );
+
+  return (
+    <Box
+      sx={{
+        minWidth: 200,
+        maxWidth: 200,
+        height: 300,
+        borderRadius: 3,
+        background: `linear-gradient(145deg, ${color}15, ${color}08)`,
+        border: `1px solid ${color}30`,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        flexShrink: 0,
+        transition: 'all 0.3s ease',
+        cursor: 'default',
+        '&:hover': {
+          transform: 'translateY(-8px) scale(1.02)',
+          boxShadow: `0 20px 40px ${color}20`,
+          borderColor: `${color}60`,
+        },
+      }}
+    >
+      {/* Book cover image */}
       <Box
         sx={{
-          width: 28,
-          height: 28,
-          borderRadius: 1.5,
-          backgroundColor: `${color}20`,
+          height: 160,
+          overflow: 'hidden',
+          position: 'relative',
+          background: `linear-gradient(135deg, ${color}25, ${color}10)`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <MenuBook sx={{ color, fontSize: 16 }} />
+        {/* Show fallback icon while loading or on error */}
+        {(!imgLoaded || imgError) && fallbackIcon}
+        {!imgError && (
+          <Box
+            component="img"
+            src={`https://covers.openlibrary.org/b/isbn/${isbn}-S.jpg`}
+            alt={title}
+            loading="lazy"
+            sx={{
+              height: '100%',
+              width: '100%',
+              objectFit: 'cover',
+              transition: 'opacity 0.4s ease, transform 0.4s ease',
+              opacity: imgLoaded ? 1 : 0,
+              position: imgLoaded ? 'relative' : 'absolute',
+              top: 0,
+              left: 0,
+              '&:hover': { transform: 'scale(1.08)' },
+            }}
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgError(true)}
+          />
+        )}
+      </Box>
+      {/* Book details */}
+      <Box sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Box>
+          <Typography
+            sx={{ fontWeight: 700, fontSize: '0.88rem', mb: 0.5, color: '#f1f5f9', lineHeight: 1.3 }}
+          >
+            {title}
+          </Typography>
+          <Typography sx={{ fontSize: '0.72rem', color: '#94a3b8' }}>
+            {author}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: 28,
+            height: 28,
+            borderRadius: 1.5,
+            backgroundColor: `${color}20`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <MenuBook sx={{ color, fontSize: 16 }} />
+        </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 /* ─────────────────────────────────────────── */
 /*                   HOMEPAGE                   */

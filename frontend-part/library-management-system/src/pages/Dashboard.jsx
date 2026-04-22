@@ -52,6 +52,7 @@ import {
 import { motion } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import API from '../api/axios';
+import { getServerFileUrl } from '../api/config';
 import { useAuth } from '../context/AuthContext';
 
 const statCardData = [
@@ -96,8 +97,6 @@ const CHART_COLORS = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#06b6d4'];
 
 const monthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -109,7 +108,7 @@ const Dashboard = () => {
   const [error, setError] = useState('');
 
   const isStaff = user?.role === 'admin' || user?.role === 'librarian';
-  const profilePhotoUrl = user?.photo ? `${API_BASE}${user.photo}` : null;
+  const profilePhotoUrl = getServerFileUrl(user?.photo);
 
   useEffect(() => {
     const fetchData = async () => {

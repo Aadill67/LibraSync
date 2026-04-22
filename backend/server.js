@@ -39,6 +39,7 @@ const io = new Server(httpServer, {
     origin: [
       "http://localhost:5173",
       "http://localhost:3000",
+      "https://libra-sync-v3xg.vercel.app",
       process.env.FRONTEND_URL,
     ].filter(Boolean),
     methods: ["GET", "POST"],
@@ -68,13 +69,31 @@ io.on("connection", (socket) => {
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  // Always allow the production Vercel frontend
+  "https://libra-sync-v3xg.vercel.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
+
+// Remove any trailing slashes from origins for consistent matching
+const normalizedOrigins = allowedOrigins.map(o => o.replace(/\/$/, ''));
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    if (normalizedOrigins.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
+    // Also allow any *.vercel.app preview deployments for this project
+    if (/^https:\/\/libra-sync.*\.vercel\.app$/.test(normalizedOrigin)) {
+      return callback(null, true);
+    }
+    console.warn(`⚠️ CORS blocked origin: ${origin}`);
+    return callback(null, false);
+  },
   credentials: true,
 }));
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));

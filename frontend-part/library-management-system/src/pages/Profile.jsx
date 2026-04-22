@@ -26,9 +26,10 @@ import { QRCodeSVG } from 'qrcode.react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedPage from '../components/AnimatedPage';
 import API from '../api/axios';
+import { getServerFileUrl } from '../api/config';
 import { useAuth } from '../context/AuthContext';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -161,9 +162,7 @@ const Profile = () => {
     }
   };
 
-  const photoSrc = profilePhoto
-    ? `${API_BASE}${profilePhoto.startsWith('/') ? '' : '/'}${profilePhoto}`
-    : null;
+  const photoSrc = getServerFileUrl(profilePhoto);
 
   const stats = [
     { label: 'Active Borrows', value: user?.activeTransactions?.length || 0, color: '#6366f1' },
