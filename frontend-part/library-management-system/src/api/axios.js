@@ -4,7 +4,7 @@ import 'nprogress/nprogress.css';
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 300 });
 
-// In production (Vercel): VITE_API_URL = "https://your-backend.onrender.com/api"
+// In production (Vercel): VITE_API_URL = "https://librasync.onrender.com/api"
 // In development: falls back to "/api" which Vite proxy handles
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
