@@ -4,9 +4,9 @@ import 'nprogress/nprogress.css';
 
 NProgress.configure({ showSpinner: false, trickleSpeed: 300 });
 
-// In production (Vercel): VITE_API_URL = "https://librasync.onrender.com/api"
-// In development: falls back to "/api" which Vite proxy handles
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+// In production (Vercel): use the Render backend API URL
+// In development: set VITE_API_URL to "/api" in .env.development (Vite proxy handles it)
+const API_BASE = import.meta.env.VITE_API_URL || 'https://librasync.onrender.com/api';
 
 const API = axios.create({
   baseURL: API_BASE,

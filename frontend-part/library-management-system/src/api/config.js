@@ -9,7 +9,7 @@
  */
 
 // Full API endpoint (used by axios)
-export const API_URL = import.meta.env.VITE_API_URL || '/api';
+export const API_URL = import.meta.env.VITE_API_URL || 'https://librasync.onrender.com/api';
 
 // Server root — strip trailing "/api" so we can reach /uploads/*
 export const SERVER_URL = (() => {
