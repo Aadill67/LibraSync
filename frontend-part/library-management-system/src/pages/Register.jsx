@@ -115,6 +115,9 @@ const Register = () => {
     setLoading(true);
     try {
       const { confirmPassword, ...submitData } = formData;
+      // Remove empty optional fields to avoid Mongoose minlength validation errors
+      if (!submitData.admissionId) delete submitData.admissionId;
+      if (!submitData.employeeId) delete submitData.employeeId;
       await register(submitData);
       navigate('/dashboard');
     } catch (err) {

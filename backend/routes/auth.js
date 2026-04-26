@@ -52,10 +52,16 @@ router.post("/register", validateRegister, async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
 
-    // Create new user
+    // Clean up empty optional fields to prevent Mongoose minlength validation errors
+    const cleanBody = { ...req.body };
+    if (!cleanBody.admissionId) delete cleanBody.admissionId;
+    if (!cleanBody.employeeId) delete cleanBody.employeeId;
+
+    // Create new user — set accountStatus to 'active' so they can log back in after logout
     const newUser = new User({
-      ...req.body,
+      ...cleanBody,
       password: hashedPass,
+      accountStatus: "active",
     });
 
     const savedUser = await newUser.save();
